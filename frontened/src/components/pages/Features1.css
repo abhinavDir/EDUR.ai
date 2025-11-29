@@ -1,0 +1,64 @@
+.f2-container {
+  padding: 25px;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+
+.f2-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.f2-sub {
+  font-size: 17px;
+  color: #444;
+  margin-bottom: 25px;
+}
+
+/* GRID */
+.f2-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 20px;
+  padding: 20px 10px;
+}
+
+/* CARD */
+.f2-card {
+  background: white;
+  padding: 18px;
+  border-radius: 16px;
+  box-shadow: 0 5px 14px rgba(0,0,0,0.1);
+  cursor: default;
+  transition: all 0.3s ease;
+}
+
+/* HOVER */
+.f2-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+}
+
+/* EMOJI */
+.f2-emoji {
+  font-size: 45px;
+  margin-bottom: 12px;
+}
+
+.f2-card h3 {
+  margin-bottom: 6px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.f2-card p {
+  font-size: 14px;
+  color: #555;
+}
+
+@media (max-width: 480px) {
+  .f2-card {
+    padding: 15px;
+  }
+}

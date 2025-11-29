@@ -1,0 +1,33 @@
+.home-container {
+  text-align: center;
+  /* padding: 20px; */
+  width: 100%;
+  padding-bottom: 20px;
+  height: 50%;
+  
+  }
+
+/* Title Text */
+
+
+/* Slider Box */
+.slider-box {
+  width: 100%;
+  /* max-width: 600px; */
+  min-width: 2px;
+  margin: auto;
+  overflow: hidden;
+  border: solid 1px;
+  height: 30%;
+  border-radius: 32px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Slider Image */
+.slider-img {
+  width: 100%;
+  height: auto;
+  border-bottom: 112px;
+  transition: opacity 0.8s ease-in-out;
+}
+.sl

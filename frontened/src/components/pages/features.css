@@ -1,0 +1,165 @@
+/* ============================================================
+   FULL BACKGROUND
+   ============================================================ */
+.features-page {
+  width: 100%;
+  min-height: 100vh;
+  /* background-size: cover !important; */
+  /* background-position: center !important; */
+  background-repeat: no-repeat !important;
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
+  padding-top: 80px;
+}
+
+/* ============================================================
+   CONTAINER
+   ============================================================ */
+.features-container {
+  text-align: center;
+  
+  padding: 60px 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* ============================================================
+   PREMIUM TITLE
+   ============================================================ */
+.features-title {
+  font-size: 48px;
+  font-weight: 900;
+  font-family: "Poppins", sans-serif;
+  margin-bottom: 0px;
+  margin-left: 230px;
+  background: linear-gradient(135deg, #ff4d79, #b72fff, #6aa9ff);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.features-subtitle {
+  font-size: 18px;
+  color: rgb(165, 43, 43);
+  margin-bottom: 35px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* ============================================================
+   GRID
+   ============================================================ */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 32px;
+  padding: 10px;
+}
+
+/* ============================================================
+   PREMIUM GLASS CARD
+   ============================================================ */
+.feature-card {
+  background: rgba(255, 255, 255, 0.25);
+  padding: 30px;
+  border-radius: 22px;
+  color: #fff;
+  text-decoration: none;
+
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.15),
+    0 0 25px rgba(255, 99, 180, 0.20);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  transition: 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* SHINY LIGHT SWEEP */
+.feature-card::before {
+  content: "";
+  position: absolute;
+  top: -120%;
+  left: -120%;
+  width: 300%;
+  height: 300%;
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0) 40%,
+    rgba(255,255,255,0.55) 50%,
+    rgba(255,255,255,0) 60%
+  );
+  opacity: 0;
+  transition: 0.55s ease;
+}
+
+/* Hover FX */
+.feature-card:hover {
+  transform: translateY(-14px) scale(1.05);
+  border-color: #ff77b4;
+  box-shadow:
+    0 18px 40px rgba(255, 80, 170, 0.3),
+    0 0 55px rgba(147,51,234,0.25);
+}
+
+.feature-card:hover::before {
+  opacity: 1;
+  top: -20%;
+  left: -20%;
+}
+
+/* ============================================================
+   ICON STYLE
+   ============================================================ */
+.feature-icon {
+  font-size: 55px;
+  margin-bottom: 12px;
+
+  background: linear-gradient(135deg, #ff4d79, #b72fff, #6aa9ff);
+  -webkit-background-clip: text;
+  color: transparent;
+
+  transition: 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.25);
+  filter: drop-shadow(0px 6px 14px rgba(255, 90, 160, 0.7));
+}
+
+/* ============================================================
+   TEXT STYLE
+   ============================================================ */
+.feature-card h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #000000;
+}
+
+.feature-card p {
+  font-size: 15px;
+  color: #000000;
+}
+
+/* ============================================================
+   MOBILE OPTIMIZATION
+   ============================================================ */
+@media (max-width: 480px) {
+  .features-title {
+    font-size: 34px;
+  }
+
+  .feature-card {
+    padding: 22px;
+  }
+
+  .feature-icon {
+    font-size: 48px;
+  }
+}

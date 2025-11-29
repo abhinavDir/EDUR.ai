@@ -1,0 +1,126 @@
+.reader-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 30px;
+  font-family: "Poppins", sans-serif;
+}
+
+.reader-title {
+  font-size: 42px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #4f46e5, #9333ea);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-align: center;
+}
+
+.reader-subtitle {
+  color: #6b7280;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+/* Drag Box */
+.drop-box {
+  border: 2px dashed #c7d2fe;
+  padding: 40px;
+  border-radius: 20px;
+  background: #f5f8ff;
+  cursor: pointer;
+  transition: 0.3s;
+  text-align: center;
+}
+.drop-box:hover {
+  background: #eef2ff;
+}
+.drop-box.active {
+  background: #e0e7ff;
+  border-color: #6366f1;
+}
+.upload-icon {
+  font-size: 45px;
+  color: #4f46e5;
+}
+
+/* Preview */
+.preview-box {
+  margin-top: 20px;
+  height: 350px;
+  background: #fafbff;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+.img-view {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.pdf-view {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.empty-preview {
+  color: #a1a1a1;
+  padding: 150px 0;
+  text-align: center;
+}
+
+/* Buttons */
+.btn {
+  padding: 12px 18px;
+  border: none;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: 0.25s;
+}
+.extract-btn {
+  margin-top: 20px;
+  background: linear-gradient(135deg, #4f46e5, #9333ea);
+  color: white;
+}
+.btn:hover {
+  transform: scale(1.05);
+}
+
+/* Extracted Text */
+.extracted-box {
+  margin-top: 30px;
+}
+.extracted-box textarea {
+  width: 100%;
+  background: white;
+  padding: 15px;
+  border-radius: 15px;
+  border: 1px solid #ddd;
+}
+
+/* Ask AI */
+.ask-box {
+  margin-top: 35px;
+  background: #fff;
+  padding: 22px;
+  border-radius: 20px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+}
+.ask-box input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+}
+.ask-btn {
+  margin-top: 12px;
+  width: 100%;
+  background: #4f46e5;
+  color: white;
+}
+
+/* AI Response */
+.response-box {
+  background: #eef2ff;
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 15px;
+}

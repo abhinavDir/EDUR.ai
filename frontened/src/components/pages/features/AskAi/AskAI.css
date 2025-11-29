@@ -1,0 +1,177 @@
+/* MAIN LAYOUT */
+.askai-layout {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+/* SIDEBAR (DESKTOP DEFAULT) */
+.sidebar {
+  width: 260px;
+  background: #1a1f2b;
+  color: white;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  border-right: 2px solid #111;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+/* New Chat Button */
+.new-chat-btn {
+  background: #2563eb;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  color: white;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+/* CHAT ITEMS */
+.chat-item {
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  background: #2b3242;
+  cursor: pointer;
+}
+
+.chat-item.active {
+  background: #2563eb;
+}
+
+/* CHAT AREA */
+.chat-screen {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  position: relative;
+}
+
+/* SCROLLABLE MESSAGES */
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  padding-bottom: 120px; 
+}
+
+/* MESSAGE BUBBLES */
+.msg {
+  margin: 12px 0;
+  display: flex;
+}
+
+.msg.user { justify-content: flex-end; }
+.msg.assistant { justify-content: flex-start; }
+
+.bubble {
+  max-width: 75%;
+  padding: 12px 15px;
+  border-radius: 12px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.msg.user .bubble {
+  background: #2563eb;
+  color: white;
+}
+
+.msg.assistant .bubble {
+  background: #e8e8e8;
+}
+
+/* FIXED INPUT BAR */
+.input-area {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  display: flex;
+  z-index: 5000;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.send-btn {
+  margin-left: 10px;
+  padding: 12px 18px;
+  background: #2563eb;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  font-size: 18px;
+}
+
+/* MOBILE MENU BUTTON */
+.mobile-menu-btn {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 15px;
+  background: #2563eb;
+  padding: 10px 14px;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  z-index: 3000;
+}
+
+/* TABLET & MOBILE */
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 60px;
+    left: -260px;
+    width: 260px;
+    height: calc(100vh - 60px);
+    z-index: 2000;
+  }
+
+  .sidebar.show {
+    left: 0;
+  }
+
+  .chat-screen {
+    width: 100%;
+  }
+}
+
+/* SMALL MOBILE SCREENS (480px) */
+@media (max-width: 480px) {
+  .mobile-menu-btn {
+    top: 15px;
+    left: 15px;
+    background: rgba(37, 99, 235, 0.9);
+    border-radius: 30px;
+  }
+
+  .sidebar {
+    width: 240px;
+    left: -2140px;
+    height: calc(100vh - 60px);
+  }
+
+  .sidebar.show {
+    left: 0 !important;
+  }
+}
