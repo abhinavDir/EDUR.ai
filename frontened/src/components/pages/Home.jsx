@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
 import img1 from "../../assets/home.png";
 import img2 from "../../assets/home2.png";
-// import img3 from "../../assets/img3.jpg";
+import img3 from "../../assets/home3.png";
 import "./Home.css";
 import Features from "./Features";
 
 export default function Home() {
-  const images = [img1,img2];
+  const images = [img1,img2,img3];
   const [index, setIndex] = useState(0);
 
   // Auto image change every 3 sec
   useEffect(() => {
     const change = setInterval(() => {
       setIndex((prev) => (prev + 1) % images.length);
-    }, 3000);
+    }, 4000);
 
     return () => clearInterval(change);
   }, []);

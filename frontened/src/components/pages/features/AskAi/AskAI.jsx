@@ -3,7 +3,9 @@ import "./AskAI.css";
 import { FaBars } from "react-icons/fa";
 import aibg from "../../../../assets/aipage.png";
 
-// ------- CLEAN MARKDOWN --------
+// -----------------------------------------
+//        CLEAN MARKDOWN (Keeps bullets)
+// -----------------------------------------
 function cleanMarkdown(text) {
   if (!text) return "";
 
@@ -25,12 +27,12 @@ export default function AskAI() {
   const [menuOpen, setMenuOpen] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // ---- AUTO SCROLL ----
+  // AUTO SCROLL
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [currentChat]);
 
-  // ---- LOAD CHATS FROM DB ----
+  // LOAD CHATS
   useEffect(() => {
     async function loadChats() {
       const res = await fetch("http://localhost:5000/api/chat/all");
@@ -43,8 +45,6 @@ export default function AskAI() {
         }));
 
         setChats(list);
-
-        // open latest chat or create new
         setCurrentChat(
           list.length > 0
             ? list.sort((a, b) => b.id - a.id)[0]
@@ -55,7 +55,7 @@ export default function AskAI() {
     loadChats();
   }, []);
 
-  // ---- SAVE CHAT TO DB ----
+  // SAVE CHAT
   async function saveChatToDB(chat) {
     await fetch("http://localhost:5000/api/chat/save", {
       method: "POST",
@@ -64,7 +64,24 @@ export default function AskAI() {
     });
   }
 
-  // ---- SAVE CHAT ON UPDATE ----
+  // DELETE CHAT FROM DATABASE
+  async function deleteChat(chatId) {
+    await fetch(`http://localhost:5000/api/chat/delete/${chatId}`, {
+      method: "DELETE",
+    });
+
+    setChats(prev => prev.filter(c => c.id !== chatId));
+
+    if (currentChat?.id === chatId) {
+      const updated = chats.filter(c => c.id !== chatId);
+      setCurrentChat(
+        updated.length > 0
+          ? updated.sort((a, b) => b.id - a.id)[0]
+          : { id: Date.now(), messages: [] }
+      );
+    }
+  }
+
   useEffect(() => {
     if (currentChat) {
       saveChatToDB(currentChat);
@@ -75,14 +92,13 @@ export default function AskAI() {
     }
   }, [currentChat]);
 
-  // ---- CREATE NEW CHAT ----
   const newChat = () => {
     const fresh = { id: Date.now(), messages: [] };
     setCurrentChat(fresh);
     setMenuOpen(false);
   };
 
-  // ---- SEND MESSAGE ----
+  // SEND MESSAGE
   const sendMessage = async () => {
     if (!input.trim()) return;
 
@@ -98,33 +114,84 @@ export default function AskAI() {
 
     setCurrentChat(prev => ({
       ...prev,
-      messages: [
-        ...prev.messages,
-        { role: "assistant", text: cleanMarkdown(reply) },
-      ],
+      messages: [...prev.messages, { role: "assistant", text: cleanMarkdown(reply) }],
     }));
   };
 
-  // ------ GEMINI 2.5 FLASH + CLEAN FORMAT ------
+  // ------------------------------------------------------------
+  //      GEMINI API — ULTRA SMART FORMAT DETECTION
+  // ------------------------------------------------------------
   async function callGeminiAPI(userText) {
     try {
+      const lower = userText.toLowerCase();
+      let formatInstruction = "";
+      let wordLimit = "60-90 words";
+
+      // Bullet format
+      if (
+        lower.includes("bullet") ||
+        lower.includes("points") ||
+        lower.includes("list") ||
+        lower.includes("dot")
+      ) {
+        formatInstruction = `
+Use bullet points only.
+Use "-" as bullet.
+Short bullets, no paragraph.
+        `;
+      }
+
+      // Paragraph format
+      else if (
+        lower.includes("para") ||
+        lower.includes("paragraph") ||
+        lower.includes("line")
+      ) {
+        formatInstruction = `
+Write only one short paragraph.
+Do NOT use bullets.
+        `;
+      }
+
+      // Meaning / translation only
+      else if (
+        lower.includes("meaning") ||
+        lower.includes("hindi meaning") ||
+        lower.includes("translate") ||
+        lower.includes("translation") ||
+        lower.includes("arth")
+      ) {
+        formatInstruction = `
+Give only the meaning or translation.
+NO extra lines.
+NO examples.
+NO paragraph.
+Just the meaning (5–15 words).
+        `;
+        wordLimit = "5-15 words";
+      }
+
+      // Default behavior
+      else {
+        formatInstruction = `
+Write a short paragraph.
+No extra examples.
+No headings.
+        `;
+      }
+
       const finalPrompt = `
-You MUST reply in the SAME LANGUAGE as the user message.
+You MUST reply in the same language as the user.
 
 Rules:
-1. 120–180 words with headings + bullets.
-2. If user says "add more", write 300–600 words.
-3. If user says "pdf", reply: "Sorry, I can't generate PDF files but I can format text beautifully."
-4. Format:
-- Title
-- Intro
-- Bullet points
-- Numbered points
-- UPPERCASE instead of bold
-- Example section
-- Summary
+- If user asks meaning → ONLY meaning (5–15 words)
+- If user asks bullet → ONLY bullets using "-"
+- If user asks paragraph → ONLY paragraph
+- Default → short paragraph (60–90 words)
+- NO markdown (**,_ ,#, code blocks)
 
-DO NOT use *, **, _, #, code blocks.
+Formatting:
+${formatInstruction}
 
 User message:
 ${userText}
@@ -145,6 +212,7 @@ ${userText}
 
       const data = await res.json();
       return data?.candidates?.[0]?.content?.parts?.[0]?.text || "⚠ No response.";
+
     } catch {
       return "⚠ Error contacting server.";
     }
@@ -165,8 +233,8 @@ ${userText}
       }}
     >
       <div className="askai-layout">
-
-        {/* Mobile menu toggle */}
+        
+        {/* Mobile toggle */}
         <button className="mobile-menu-btn" onClick={() => setMenuOpen(!menuOpen)}>
           <FaBars />
         </button>
@@ -181,12 +249,29 @@ ${userText}
               <div
                 key={chat.id}
                 className={`chat-item ${chat.id === currentChat.id ? "active" : ""}`}
-                onClick={() => {
-                  setCurrentChat(chat);
-                  setMenuOpen(false);
-                }}
               >
-                {chat.messages[0]?.text.slice(0, 20) || "New Chat"}
+                <div
+                  onClick={() => {
+                    setCurrentChat(chat);
+                    setMenuOpen(false);
+                  }}
+                  style={{ flex: 1, cursor: "pointer" }}
+                >
+                  {chat.messages[0]?.text.slice(0, 20) || "New Chat"}
+                </div>
+
+                {/* DELETE BUTTON */}
+                <button
+                  className="delete-chat-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (confirm("Are you sure you want to delete this chat?")) {
+                      deleteChat(chat.id);
+                    }
+                  }}
+                >
+                  ✖
+                </button>
               </div>
             ))}
         </aside>
@@ -203,7 +288,7 @@ ${userText}
             <div ref={messagesEndRef}></div>
           </div>
 
-          {/* Input Box */}
+          {/* Input */}
           <div className="input-area">
             <input
               type="text"
@@ -216,7 +301,7 @@ ${userText}
             <button className="send-btn" onClick={sendMessage}>➤</button>
           </div>
         </div>
-
+        
       </div>
     </div>
   );

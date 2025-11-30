@@ -16,7 +16,7 @@ export default function Footer() {
 
         <div className="footer-social">
           <a href="#"><FaInstagram /></a>
-          <a href="#"><FaLinkedin /></a>
+          <a href="https://www.linkedin.com/in/abhinav-pandey-830128334/"><FaLinkedin /></a>
           <a href="#"><FaGithub /></a>
           <a href="#"><FaEnvelope /></a>
         </div>

@@ -1,6 +1,9 @@
 /* FULL PAGE BACKGROUND WRAPPER */
 .about-page {
   position: relative;
+  border-radius: 30px;
+  border: dotted 2px;
+  
 }
 
 /* CONTAINER */

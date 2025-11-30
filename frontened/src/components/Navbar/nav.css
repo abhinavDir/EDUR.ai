@@ -5,19 +5,19 @@
   top: 0;
   left: 0;
   padding: 12px 20px;
-  background: white;
+  background: rgb(192, 171, 171);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 10 21px 18px rgba(226, 21, 21, 0.1);
   z-index: 1000;
   box-sizing: border-box;   /* ⭐ Prevents shrinking */
 }
 
 .logo {
+  margin-left: 30px;
   font-size: 24px;
   font-weight: bold;
-  color: #2563eb;
 }
 
 /* Desktop Menu */
@@ -144,7 +144,7 @@
 .logo {
   font-size: 26px;
   font-weight: 700;
-  color: #2563eb;
+color: rgb(111, 26, 208);
 }
 
 /* Desktop Menu */
@@ -275,6 +275,7 @@
   /* Mobile bottom bar */
   .bottom-nav {
     display: flex;
+    background-color: transparent;
     justify-content: space-around;
     align-items: center;
     position: fixed;

@@ -1,3 +1,4 @@
+// backend/controllers/authController.js
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 
@@ -8,16 +9,13 @@ export const register = async (req, res) => {
   try {
     const { name, email, password, mobile, purpose } = req.body;
 
-    // Check existing user
     const existing = await User.findOne({ email });
     if (existing) {
       return res.json({ status: false, message: "Email already registered" });
     }
 
-    // Hash password
     const hashed = await bcrypt.hash(password, 10);
 
-    // Create new user
     const newUser = await User.create({
       name,
       email,
@@ -26,7 +24,6 @@ export const register = async (req, res) => {
       purpose,
     });
 
-    // ⭐ Send full user including _id
     return res.json({
       status: true,
       message: "Registration successful",
@@ -52,19 +49,16 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Find user
     const user = await User.findOne({ email });
     if (!user) {
       return res.json({ status: false, message: "User not found" });
     }
 
-    // Match password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.json({ status: false, message: "Incorrect password" });
     }
 
-    // ⭐ Send full user including _id
     return res.json({
       status: true,
       message: "Login successful",

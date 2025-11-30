@@ -1,27 +1,110 @@
+/* Prevent whole page scrolling - if this causes dev inconvenience remove while testing */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  /* overflow: hidden; keep as you requested; remove during dev if you need page scroll */
+}
+
+/* AUTH BOX (DESKTOP) */
 .auth-box {
-  max-width: 350px;
+  max-width: 370px;
   margin: auto;
   padding: 20px;
-  margin-top: 80px;
+  margin-top: 150px;
   box-shadow: 0 3px 10px rgba(0,0,0,0.1);
   border-radius: 12px;
+  width: 110%;
+  background: linear-gradient(135deg, rgb(206, 7, 173), rgb(123, 41, 206), rgb(214, 97, 38));
+  z-index: 2; /* ensure box sits above the blurred layer */
+  position: relative;
 }
 
+/* FULL SCREEN BACKGROUND (container) */
+.login-bg {
+  position: relative;              /* needed for ::before */
+  width: 100%;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;    /* fixed background */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+/* BLUR ONLY THE BACKGROUND (behind the content) */
+.login-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;        /* inherits the inline backgroundImage set in JSX */
+  background-size: cover;
+  background-position: center;
+  filter: blur(12px);
+  transform: scale(1.08);     /* scale up to hide blurred edges */
+  z-index: 0;                 /* behind content */
+}
+
+/* ensure content sits above the pseudo-element */
+.login-bg > .auth-box { z-index: 2; }
+
+/* INPUT */
 .auth-box input {
-  width: 100%;
-  margin: 10px 0;
+  width: 90%;
+  margin: 40px auto;
   padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  border-radius: 48px;
+  border: 1px solid #0c0707;
+  display: block;
+  font-size: 16px;
 }
 
+/* BUTTON */
 .auth-box button {
-  width: 100%;
-  padding: 12px;
-  border: none;
+  width: 40%;
+  padding: 13px;
+  border: 2px solid black;
   background: #2563eb;
   color: white;
   border-radius: 8px;
-  margin-top: 10px;
+  margin: 10px auto 0 auto;
   font-size: 16px;
+  display: block;
+  cursor: pointer;
+}
+h2{
+  text-align: center;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+/* ------------------ MOBILE: bottom fixed auth-box ------------------ */
+@media (max-width: 480px) {
+
+  /* keep bg full-screen and centered; auth-box will sit at bottom */
+  .login-bg {
+    height: 100vh;
+    align-items: flex-end;
+      overflow: hidden; /* push child to bottom */
+  }
+
+  .auth-box {
+    position: fixed;   /* fixed to viewport */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70vh;
+    border-radius: 38px 38px 0 0;
+    padding: 19px;
+    margin-left: 34px;         /* no extra margins */
+    box-shadow: 0 -14px 35px rgba(0,0,0,0.2);
+    background: linear-gradient(135deg, rgb(206, 7, 173), rgb(123, 41, 206), rgb(214, 97, 38));
+    z-index: 3;        /* above the blurred pseudo-element */
+    overflow-y: auto;  /* allow internal scrolling if content tall */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .auth-box input { width: 70%; margin-top: 30px; }
+  .auth-box button { width: 60%; margin-top: 20px; }
 }

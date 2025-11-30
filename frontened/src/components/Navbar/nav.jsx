@@ -26,7 +26,7 @@ export default function Nav({ isLoggedIn, setIsLoggedIn }) {
     <>
       {/* -------- TOP NAV -------- */}
       <nav className="top-nav">
-        <div className="logo">MyLogo</div>
+        <div className="logo">EdURAI</div>
 
         {/* -------- DESKTOP MENU -------- */}
         <ul className="menu desktop-menu">
