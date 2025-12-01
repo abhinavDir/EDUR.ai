@@ -51,14 +51,14 @@ export default function About() {
         </div>
 
         {/* FOUNDER */}
-        <h2 className="section-title">👨‍💻 Founder</h2>
-
+        {/* <h2 className="section-title">👨‍💻 Founder</h2> */}
+{/* 
         <div className="glass-card founder-card">
           <div className="founder-emoji">🙋‍♂️</div>
           <h3>Abhinav Pandey</h3>
           <p>B.Tech CSE (AI) | MERN + AI Developer</p>
           <p>Passionate about building intelligent tools that enhance learning.</p>
-        </div>
+        </div> */}
 
         {/* FUTURE VISION */}
         <div className="glass-card vision-card">

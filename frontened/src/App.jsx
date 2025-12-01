@@ -19,6 +19,8 @@ import MCQGenerator from "./components/pages/features/MCQ/MCQ.jsx";
 import Reader from "./components/pages/features/Reader/Reader.jsx";
 import GrammarFix from "./components/pages/features/Personalized/Personalized.jsx";
 import Dashboard1 from "./components/pages/features/Notes/Notes.jsx";
+import Reminder from "./components/pages/Reminder.jsx";
+import LogosSliderPage from "./components/pages/LogoSlider.jsx";
 
 const libraries = ["places"];
 
@@ -62,6 +64,7 @@ export default function App() {
   element={
     <>
       <Home />
+      <LogosSliderPage/>
       <Features2 />
       <About />
       <Footer/>
@@ -72,6 +75,8 @@ export default function App() {
               <Route path="/ask-ai" element={<AskAI />} />
                <Route path="/mcq" element={<MCQGenerator />} />
                  <Route path="/reader" element={<Reader />} />
+                                  <Route path="/location" element={<Location />} />
+
                    <Route path="/personalized" element={<GrammarFix />} />
                    <Route path="/notes" element={<Dashboard1 />} />
 
@@ -86,6 +91,8 @@ export default function App() {
             <Route path="/features" element={<ProtectedRoute><Features isLoggedIn={isLoggedIn} /></ProtectedRoute>} />
             <Route path="/location" element={<ProtectedRoute><Location /></ProtectedRoute>} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                        <Route path="/reminder" element={<ProtectedRoute><Reminder /></ProtectedRoute>} />
+
           </Routes>
         </div>
       </BrowserRouter>

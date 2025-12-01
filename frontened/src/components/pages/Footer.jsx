@@ -8,7 +8,7 @@ export default function Footer() {
     <footer className="footer">
 
       <div className="footer-left">
-        <h2 className="footer-logo">AI Education 🚀</h2>
+        <h2 className="footer-logo">EdURAI 🚀</h2>
         <p className="footer-desc">
           Smarter learning powered by AI.  
           Notes, MCQs, summaries & more — all in one place.

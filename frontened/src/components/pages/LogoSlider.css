@@ -1,0 +1,52 @@
+/* clean wrapper */
+.clean-wrapper {
+  position: relative;
+  width: 100%;
+  height:55px;
+  overflow: hidden;
+  background: transparent !important;
+  border: none !important;
+  padding: 0;
+  margin: 0;
+}
+
+/* slider wrapper */
+.slider-container-clean {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  border-radius: 40px;
+  border: 1px;
+  background: transparent;
+}
+
+/* sliding motion row */
+.slider-motion-clean {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  width: max-content;
+}
+
+/* each logo box */
+.clean-logo-box {
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  background: transparent;
+}
+
+/* actual logo */
+.clean-logo-img {
+  height: 45px;
+  transition: 0.2s ease;
+  opacity: 1;
+}
+
+/* hover effect (optional) */
+.clean-logo-img:hover {
+  transform: scale(1.1);
+ 
+  /* animation:  7s ease-in-out infinite; */
+  filter: drop-shadow(0px 1px 13px rgba(36, 34, 34, 0.8));
+}

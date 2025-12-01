@@ -1,0 +1,57 @@
+.reminder-body {
+  padding: 25px;
+  text-align: center;
+  animation: fadeIn 0.7s ease;
+}
+
+.reminder-title {
+  font-size: 32px;
+  font-weight: bold;
+  animation: bounceIn 1s ease;
+}
+
+.streak-box-animated {
+  margin-top: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ff7b00, #ff3d2e);
+  padding: 15px 25px;
+  border-radius: 18px;
+  color: white;
+  display: inline-block;
+  animation: pulse 1.5s infinite;
+  transition: transform 0.3s ease;
+}
+
+.fire-glow {
+  box-shadow: 0 0 20px #ff4500, 0 0 40px #ff1e00;
+  transform: scale(1.05);
+}
+
+.reminder-info {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.no-user {
+  padding: 40px;
+  text-align: center;
+  font-size: 22px;
+  color: red;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounceIn {
+  0% { opacity: 0; transform: scale(0.3); }
+  100% { opacity: 1; transform: scale(1); }
+}

@@ -93,11 +93,39 @@ h2{
     position: fixed;   /* fixed to viewport */
     bottom: 0;
     left: 0;
-    width: 100%;
+    width: 70%;
     height: 70vh;
     border-radius: 38px 38px 0 0;
-    padding: 19px;
-    margin-left: 34px;         /* no extra margins */
+    padding: 29px;
+    margin-left: 20px;         /* no extra margins */
+    box-shadow: 0 -14px 35px rgba(0,0,0,0.2);
+    background: linear-gradient(135deg, rgb(206, 7, 173), rgb(123, 41, 206), rgb(214, 97, 38));
+    z-index: 3;        /* above the blurred pseudo-element */
+    overflow-y: auto;  /* allow internal scrolling if content tall */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .auth-box input { width: 70%; margin-top: 30px; }
+  .auth-box button { width: 60%; margin-top: 20px; }
+}
+@media (max-width: 410px) {
+
+  /* keep bg full-screen and centered; auth-box will sit at bottom */
+  .login-bg {
+    height: 100vh;
+    align-items: flex-end;
+      overflow: hidden; /* push child to bottom */
+  }
+
+  .auth-box {
+    position: fixed;   /* fixed to viewport */
+    bottom: 0;
+    left: 0;
+    width: 70%;
+    height: 70vh;
+    border-radius: 38px 38px 0 0;
+    padding: 29px;
+    margin-left: 20px;         /* no extra margins */
     box-shadow: 0 -14px 35px rgba(0,0,0,0.2);
     background: linear-gradient(135deg, rgb(206, 7, 173), rgb(123, 41, 206), rgb(214, 97, 38));
     z-index: 3;        /* above the blurred pseudo-element */

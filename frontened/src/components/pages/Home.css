@@ -13,9 +13,9 @@
 
 /* Slider Box */
 .slider-box {
-  width: 100%;
-  max-width: 1660px;
-  min-width: 2px;
+  /* width: 100%; */
+  /* max-width:auto; */
+  /* min-width: 2px; */
   margin: auto;
   overflow: hidden;
   border: solid 2px;

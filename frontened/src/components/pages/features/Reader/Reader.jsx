@@ -6,14 +6,17 @@ export default function Reader() {
   const [file, setFile] = useState(null);
   const [previewURL, setPreviewURL] = useState("");
   const [aiResponse, setAiResponse] = useState("");
+  const [summary, setSummary] = useState("");   // ⭐ Auto summary
   const [question, setQuestion] = useState("");
   const [dragActive, setDragActive] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const fileInputRef = useRef();
-  const API_KEY = "YOUR_API_KEY_HERE"; // <--- PUT YOUR KEY
 
-  // Convert to Base64
+  // 🔥 Use your environment variable key
+  const API_KEY = import.meta.env.VITE_GEMINI;
+
+  // Convert file to Base64
   const toBase64 = (file) =>
     new Promise((resolve) => {
       const reader = new FileReader();
@@ -21,19 +24,22 @@ export default function Reader() {
       reader.readAsDataURL(file);
     });
 
-  // Handle file select
-  const handleFile = (f) => {
+  // Handle file upload
+  const handleFile = async (f) => {
     setFile(f);
     setPreviewURL(URL.createObjectURL(f));
     setAiResponse("");
+    setSummary("");
+
+    // ⭐ Auto summarize when file is uploaded
+    autoSummarize(f);
   };
 
   // Drag events
   const drag = (e, t) => {
     e.preventDefault();
     e.stopPropagation();
-    if (t === "enter" || t === "over") setDragActive(true);
-    if (t === "leave") setDragActive(false);
+    setDragActive(t === "enter" || t === "over");
   };
 
   const drop = (e) => {
@@ -42,15 +48,11 @@ export default function Reader() {
     if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
   };
 
-  // -------------------------------
-  // ⭐ AI ANALYZE FILE + ANSWER USER
-  // -------------------------------
-  const askAI = async () => {
-    if (!file) return alert("Upload a file first.");
-    if (!question) return;
-
+  // -----------------------------------------------------
+  // ⭐ AUTO SUMMARY (PDF or Image)
+  // -----------------------------------------------------
+  const autoSummarize = async (file) => {
     setLoading(true);
-    setAiResponse("");
 
     try {
       const base64 = await toBase64(file);
@@ -60,7 +62,7 @@ export default function Reader() {
           {
             role: "user",
             parts: [
-              { text: question },
+              { text: "Summarize this document or image briefly in 5–7 lines." },
               {
                 inline_data: {
                   mime_type: file.type,
@@ -77,17 +79,68 @@ export default function Reader() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
+          body: JSON.stringify(body),
+        }
+      );
+
+      const data = await response.json();
+      const summaryText =
+        data?.candidates?.[0]?.content?.parts?.[0]?.text || "Could not summarize the file.";
+
+      setSummary(summaryText);
+    } catch (err) {
+      console.error(err);
+      setSummary("Error: Could not summarize the document.");
+    }
+
+    setLoading(false);
+  };
+
+  // -----------------------------------------------------
+  // ⭐ USER ASKS QUESTION ABOUT THE FILE
+  // -----------------------------------------------------
+  const askAI = async () => {
+    if (!file) return alert("Upload a file first.");
+    if (!question.trim()) return;
+
+    setLoading(true);
+    setAiResponse("");
+
+    try {
+      const base64 = await toBase64(file);
+
+      const body = {
+        contents: [
+          {
+            role: "user",
+            parts: [
+              { text: `Answer this question based on the uploaded file: ${question}` },
+              {
+                inline_data: {
+                  mime_type: file.type,
+                  data: base64
+                }
+              }
+            ]
+          }
+        ]
+      };
+
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
         }
       );
 
       const data = await response.json();
       const answer =
         data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-        "AI couldn't understand the file.";
+        "AI couldn't answer from the file.";
 
       setAiResponse(answer);
-
     } catch (err) {
       console.error(err);
       alert("AI request failed");
@@ -99,9 +152,7 @@ export default function Reader() {
   return (
     <div className="reader-container">
       <h1 className="reader-title">📑 AI Document & Image Analyzer</h1>
-      <p className="reader-sub">
-        Upload → Ask Anything → AI Reads & Answers
-      </p>
+      <p className="reader-sub">Upload → Auto Summary → Ask Anything</p>
 
       {/* Drag + Upload */}
       <div
@@ -137,20 +188,28 @@ export default function Reader() {
         )}
       </div>
 
+      {/* AI Summary */}
+      {summary && (
+        <div className="response-box">
+          <h3>📘 Auto Summary:</h3>
+          <p>{summary}</p>
+        </div>
+      )}
+
       {/* Ask AI */}
       <div className="ask-box">
         <h3><FaRobot /> Ask Anything About This File</h3>
 
         <input
           type="text"
-          placeholder="Ask a question… (e.g., summarize this page)"
+          placeholder="Ask a question… (e.g., what is shown in this image?)"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && askAI()}
         />
 
         <button className="btn ask-btn" onClick={askAI}>
-          {loading ? "Thinking…" : "Ask AI"}
+          {loading ? "Processing…" : "Ask AI"}
         </button>
 
         {aiResponse && (

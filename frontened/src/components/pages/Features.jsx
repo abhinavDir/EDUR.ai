@@ -31,7 +31,18 @@ export default function Features({ isLoggedIn }) {
         
       }}
     >
+    
+
       <div className="features-container">
+         <div className="floating-logos">
+  <img src="https://cdn-icons-png.flaticon.com/512/4712/4712100.png" className="float-logo l1" />
+  {/* <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" className="float-logo l2" /> */}
+  <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" className="float-logo l3" />
+  <img src="https://cdn-icons-png.flaticon.com/512/545/545682.png" className="float-logo l4" />
+  <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" className="float-logo l5" />
+  <img src="https://cdn-icons-png.flaticon.com/512/2921/2921222.png" className="float-logo l6" />
+</div>
+
 
         <h2 className="features-title">🚀 Ultra Smart Features</h2>
         <p className="features-subtitle">Next-gen AI tools designed for modern learners</p>
