@@ -1,4 +1,4 @@
-import "./Features1.css";
+import "./features1.css";
 import bg3 from "../../assets/bg2.png";  // ⭐ correct path
 
 export default function Features2() {
