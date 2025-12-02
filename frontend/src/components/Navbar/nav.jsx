@@ -6,7 +6,7 @@ import {
   FaBars,
   FaTimes,
   FaHome,
-  FaSearch,
+  FaBookOpen,
   FaMapMarkerAlt,
   FaUser,
   FaUserCircle,
@@ -116,7 +116,7 @@ export default function Nav({ isLoggedIn, setIsLoggedIn }) {
         </Link>
 
         <Link to="/features" className="bottom-item">
-          <FaSearch />
+          <FaBookOpen />
           <span>Search</span>
         </Link>
 
