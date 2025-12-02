@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { motion, useMotionValue, animate } from "framer-motion";
 import useMeasure from "react-use-measure";
-import "./logoslider.css";
+import "./LogoSlider.css";
+
 
 // ------------ Infinite Slider ------------
 function InfiniteSlider({ children, gap = 40, duration = 100 }) {
