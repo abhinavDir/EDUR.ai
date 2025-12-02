@@ -21,15 +21,48 @@ import statsRoutes from "./routes/statsRoutes.js";
 import studyRoutes from "./routes/studyRoutes.js";
 
 dotenv.config();
+connectDB();
+
 const app = express();
-app.use(cors());
+
+// =============================
+// CORS FIX FOR DEPLOYMENT
+// =============================
+const allowedOrigins = [
+  "http://localhost:5173",                 // Vite local
+  "http://localhost:3000",                 // fallback
+  process.env.FRONTEND_URL                 // deployed URL (Vercel)
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-connectDB();
+// =============================
+// HEALTH CHECK (Render required)
+// =============================
+app.get("/health", (req, res) => {
+  res.send("OK");
+});
 
+// =============================
+// SOCKET.IO SETUP
+// =============================
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "*" } });
+
+const io = new Server(server, {
+  cors: {
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
 
 // GLOBAL userId → socketId map
 const clients = {};
@@ -40,18 +73,13 @@ const xpNeeded = (lvl) => lvl * XP_LEVEL_BASE;
 
 // SOCKET HANDLING
 io.on("connection", (socket) => {
+  console.log("🔥 Socket Connected:", socket.id);
 
-  // -------------------------
-  // USER REGISTERED
-  // -------------------------
   socket.on("registerUser", (userId) => {
     if (!userId) return;
     clients[userId] = socket.id;
   });
 
-  // -------------------------
-  // REQUEST INITIAL STATS
-  // -------------------------
   socket.on("requestStats", async ({ userId }) => {
     try {
       const stats = await UserStats.findOne({ userId });
@@ -64,22 +92,18 @@ io.on("connection", (socket) => {
         xp: stats?.xp || 0,
         xpNeeded: stats ? xpNeeded(stats.level) : xpNeeded(1),
         streak: streak?.streak || 0,
-        daily
+        daily,
       });
     } catch (err) {
       console.log("requestStats error:", err);
     }
   });
 
-  // -------------------------
-  // REAL MINUTES ACTIVITY
-  // -------------------------
   socket.on("activity", async ({ userId }) => {
     if (!userId) return;
     const now = new Date();
     const today = new Date().toISOString().slice(0, 10);
 
-    // Daily doc
     let daily = await DailyGoals.findOne({ userId, date: today });
     if (!daily) {
       daily = await DailyGoals.create({
@@ -91,11 +115,10 @@ io.on("connection", (socket) => {
         xpProgress: 0,
         studyMinutes: 0,
         streakDone: false,
-        lastActivity: now
+        lastActivity: now,
       });
     }
 
-    // REAL TIME DIFFERENCE CALCULATION
     const last = daily.lastActivity || now;
     const diffMs = now - last;
     const diffMinutes = Math.floor(diffMs / 60000);
@@ -107,10 +130,6 @@ io.on("connection", (socket) => {
     }
 
     const mins = daily.studyMinutes;
-
-    // -------------------------
-    // FIXED STREAK MILESTONES
-    // -------------------------
     let addStreak = 0;
 
     if (mins === 15) addStreak = 1;
@@ -124,18 +143,16 @@ io.on("connection", (socket) => {
     if (addStreak > 0) {
       streak.streak += addStreak;
       await streak.save();
-
       const sid = clients[userId];
       if (sid) {
         io.to(sid).emit("streakUpdate", {
           streak: streak.streak,
           minutes: mins,
-          added: addStreak
+          added: addStreak,
         });
       }
     }
 
-    // SEND LIVE DASHBOARD UPDATE
     const userStats = await UserStats.findOne({ userId });
     const sid = clients[userId];
     if (sid) {
@@ -144,14 +161,11 @@ io.on("connection", (socket) => {
         xp: userStats?.xp || 0,
         xpNeeded: xpNeeded(userStats?.level || 1),
         streak: streak.streak,
-        daily
+        daily,
       });
     }
   });
 
-  // -------------------------
-  // DISCONNECT
-  // -------------------------
   socket.on("disconnect", () => {
     for (const uid in clients) {
       if (clients[uid] === socket.id) delete clients[uid];
