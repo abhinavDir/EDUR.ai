@@ -45,7 +45,7 @@ export default function GrammarFix() {
       voices.find(v => v.name.includes("Female")) ||
       voices.find(v => v.name.includes("Samantha")) ||
       voices.find(v => v.name.includes("Google US English")) ||
-      voices.find(v => v.lang === "en-US") ||
+      voices.find(v => v.lang === "en-IND") ||
       voices[0]
     );
   }
